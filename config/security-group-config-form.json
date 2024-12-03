@@ -8,7 +8,7 @@
                 "FromPort": 22,
                 "ToPort": 22,
                 "CidrIpv4": "",
-                "Description": "python"
+                "Description": ""
             }
         }
     ]
