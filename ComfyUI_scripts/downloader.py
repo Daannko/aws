@@ -5,9 +5,6 @@ from concurrent.futures import ThreadPoolExecutor
 import subprocess
 from getpass import getpass
 
-import requests.exceptions
-
-
 def login_to_hf():
     inp = ""
     while inp != "y" and inp != "n" and inp != "Y" and inp != "N":

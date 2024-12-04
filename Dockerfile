@@ -15,8 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -U "huggingface_hub[cli]" \
     gguf
-	
-RUN wget https://github.com/Daannko/aws/blob/425a1cf00e6063ffa2abd9b79c7b69ae0985d1c9/ComfyUI_scripts/downloader.py .
+
+RUN wget -O downloader.py https://raw.githubusercontent.com/Daannko/aws/refs/heads/main/ComfyUI_scripts/downloader.py
 
 WORKDIR custom_nodes
 
@@ -25,7 +25,6 @@ WORKDIR ComfyUI-Manager
 RUN pip install -r requirements.txt && \
     pip install insightface filterpy onnxruntime-gpu
 
-
 WORKDIR /ml/ComfyUI
 
-CMD ["bash", "-c", "python downloader.py && python main.py"]
+CMD ["bash", "-c", "python3 downloader.py && python3 main.py --listen 0.0.0.0"]
