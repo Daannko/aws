@@ -27,4 +27,6 @@ RUN pip install -r requirements.txt && \
 
 WORKDIR /ml/ComfyUI
 
+EXPOSE 8188
+
 CMD ["bash", "-c", "python3 downloader.py && python3 main.py --listen 0.0.0.0"]
