@@ -1,0 +1,23 @@
+{
+  "TargetCapacity": 1,
+  "IamFleetRole": "",
+  "AllocationStrategy": "lowestPrice",
+  "LaunchTemplateConfigs": [
+    {
+      "LaunchTemplateSpecification": {
+        "LaunchTemplateId": "",
+        "Version": ""
+      },
+      "Overrides": [
+        {
+          "InstanceType": "g5.2xlarge",
+          "AvailabilityZone": "eu-north-1b"
+        },
+		{
+          "InstanceType": "g5.xlarge",
+          "AvailabilityZone": "eu-north-1b"
+        }
+      ]
+    }
+  ]
+}
