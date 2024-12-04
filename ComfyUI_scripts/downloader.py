@@ -1,6 +1,30 @@
 from os import system, name
+import sys
 import os
 from concurrent.futures import ThreadPoolExecutor
+import subprocess
+from getpass import getpass
+
+import requests.exceptions
+
+
+def login_to_hf():
+    inp = ""
+    while inp != "y" and inp != "n" and inp != "Y" and inp != "N":
+        inp = input("Do you want to login to hf? (y/n)")
+
+    if inp == "n":
+        return "Not logged in"
+
+    token = getpass("HF-cli token: ")
+    print("Logging in...")
+    result = subprocess.run(["huggingface-cli", "login", "--token", token], capture_output=True, text=True)
+    if "Login successful." in result.stderr:
+        output = "Logged as " + subprocess.run(["huggingface-cli", "whoami"], capture_output=True, text=True).stdout
+    else:
+        output = f'Failed to login: Invalid token'
+    return output
+
 
 def clear():
     if name == 'nt':
@@ -8,9 +32,12 @@ def clear():
     else:
         _ = system('clear')  # Linux
 
+
 def run_download(command):
     print(f"Running: {command}")
     os.system(command)
+
+
 def download():
     clear()
     download = []
@@ -23,6 +50,7 @@ def download():
             download.append(downloads.get(category).get(file) + " --quiet")
     with ThreadPoolExecutor() as executor:
         executor.map(run_download, download)
+
 
 def get_input_int(size):
     try:
@@ -73,6 +101,10 @@ downloads = {
         "diffusion_pytorch_model.safetensors": "huggingface-cli download jasperai/Flux.1-dev-Controlnet-Upscaler diffusion_pytorch_model.safetensors --local-dir models/upscale_models"
     }
 }
+
+args = sys.argv
+login_output = login_to_hf()
+
 categories = [list(downloads.keys())][0]
 n_categories = len(categories)
 
@@ -84,9 +116,8 @@ inp_f = ""
 flag = False
 # Chose categories
 while True:
-
     clear()
-
+    print(login_output)
     for i, category in enumerate(categories):
         print(f'{i + 1}. {category}')
     if flag:

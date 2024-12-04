@@ -205,18 +205,20 @@ if config_data is None:
     exit(1)
 
 args = sys.argv
+if len(args) == 1:
+    print("No actions specified.")
 tunneling = ""
 
-if "-t" in args:
+if "--t" in args:
     tunneling = '-L 8188:127.0.0.1:8188'
 
-if '-create' in args:
+if '--create' in args:
     if len(get_running_instance_info(InstanceInfo.INSTANCE_ID)) > 0:
         write_message("There is already running instance!")
         exit(1)
     create_spot_fleet()
 
-if '-connect' in args:
+if '--connect' in args:
     counter = 1
     while True:
         if len(get_running_instance_info(InstanceInfo.PUBLIC_IP_ADDRESS)) == 0:
@@ -229,6 +231,6 @@ if '-connect' in args:
         exit(1)
     connect_to_running_instance(get_running_instance_info(InstanceInfo.PUBLIC_IP_ADDRESS), tunneling)
 
-if '-stop' in args:
+if '--stop' in args:
     stop_all_spot_fleet_requests()
     write_message("Removed all instances")
