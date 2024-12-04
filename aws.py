@@ -6,7 +6,7 @@ from enum import Enum
 
 import paramiko
 import requests
-from paramiko.ssh_exception import BadHostKeyException, AuthenticationException, SSHException
+from paramiko.ssh_exception import BadHostKeyException, AuthenticationException, SSHException, NoValidConnectionsError
 
 
 class InstanceInfo(Enum):
@@ -92,6 +92,8 @@ def check_connection_to_instance(ip):
             write_message(f'#{connect_counter} Failed to connect using ssh on ip: {ip} ')
             connect_counter += 1
             time.sleep(30)
+        except NoValidConnectionsError:
+            time.sleep(5)
     write_message(f'#Fianl Failed to connect using ssh on ip: {ip} ')
     return False
 
@@ -218,7 +220,7 @@ if '-connect' in args:
     counter = 1
     while True:
         if len(get_running_instance_info(InstanceInfo.PUBLIC_IP_ADDRESS)) == 0:
-            write_message(f"#{counter}No running instances... waiting")
+            write_message(f"#{counter} No running instances... waiting")
             counter += 1
             time.sleep(30)
         else:
